@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "153795589671",
+    "project_id": "mood-tracker-raom",
+    "storage_bucket": "mood-tracker-raom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153795589671:android:c20351f412d7ea93614002",
+        "android_client_info": {
+          "package_name": "kr.raom.mood_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARI2U88BJeskzsBi6z_dk9RKZIPVG3dCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
