@@ -4,10 +4,12 @@ import 'package:mood_tracker/common/widgets/main_navigation/main_navigation_scre
 import 'package:mood_tracker/features/authentication/repos/authentication_repository.dart';
 import 'package:mood_tracker/features/authentication/views/login_screen.dart';
 import 'package:mood_tracker/features/authentication/views/signup_screen.dart';
+import 'package:mood_tracker/features/history/views/setting_screen.dart';
 
 final routerProvider = Provider(
   (ref) {
     return GoRouter(
+      // initialLocation: "/signup",
       initialLocation: "/",
       redirect: (context, state) {
         final isLoggedIn = ref.read(authRepo).isLoggedIn;
@@ -32,11 +34,16 @@ final routerProvider = Provider(
         ),
         GoRoute(
           name: MainNavigationScreen.routeName,
-          path: "/:tab(|search|activity|profile)",
+          path: "/:tab(|post|history)",
           builder: (context, state) {
             final tab = state.params["tab"]!;
             return MainNavigationScreen(tab: tab);
           },
+        ),
+        GoRoute(
+          name: SettingsScreen.routeName,
+          path: SettingsScreen.routeURL,
+          builder: (context, state) => const SettingsScreen(),
         ),
       ],
     );

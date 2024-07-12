@@ -1,6 +1,10 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mood_tracker/features/history/views/history_screen.dart';
+import 'package:mood_tracker/features/posts/views/post_timeline_screen.dart';
+import 'package:mood_tracker/features/posts/views/widgets/modal_sheet.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "mainNavigation";
@@ -17,30 +21,41 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<String> _tabs = [
     "",
-    "search",
     "post",
-    "activity",
-    "profile",
+    "history",
   ];
 
   late int _selectedIndex = _tabs.indexOf(widget.tab);
 
   void _onTap(int index) async {
-    if (index == 2) {
-      await showModalBottomSheet(
+    if (index == 1) {
+      var result = await showModalBottomSheet(
         context: context,
-        // showDragHandle: true,
+        showDragHandle: true,
         isScrollControlled: true,
         // barrierColor: Colors.red,
         // backgroundColor: Colors.transparent,
-        builder: (context) => Container(),
+        builder: (context) => const ModalSheet(),
       );
+      if (result == 'post') {
+        setState(() {
+          _selectedIndex = 0;
+        });
+      }
     } else {
       context.go("/${_tabs[index]}");
       setState(() {
         _selectedIndex = index;
       });
     }
+  }
+
+  bool _changeIndex(value) {
+    if (value == 1) {
+      _onTap(1);
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -54,60 +69,54 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         children: [
           Offstage(
             offstage: _selectedIndex != 0,
-            // child: const VideoTimelineScreen(),
-            child: Container(),
+            child: const PostTimelineScreen(),
+            // child: Container(),
           ),
+          // Offstage(
+          //   offstage: _selectedIndex != 1,
+          //   child: const NewPost(),
+          //   // child: Container(),
+          // ),
           Offstage(
-            offstage: _selectedIndex != 1,
-            // child: const DiscoverScreen(),
-            child: Container(),
+            offstage: _selectedIndex != 2,
+            child: const HistoryScreen(),
+            // child: Container(),
           ),
-          Offstage(
-            offstage: _selectedIndex != 3,
-            // child: const InboxScreen(),
-            child: Container(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 4,
-            child: Container(),
-          )
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade400,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: _selectedIndex,
-        onTap: _onTap,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            // backgroundColor: Colors.amber,
+      extendBody: true,
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
+        letIndexChange: (value) => _changeIndex(value),
+        backgroundColor: Colors.transparent,
+        color: Theme.of(context).colorScheme.primaryContainer,
+        buttonBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        // key: _bottomNavigationKey,
+        items: <Widget>[
+          const FaIcon(
+            FontAwesomeIcons.list,
+            size: 24,
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            // backgroundColor: Colors.blue,
+          Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: const FaIcon(
+              FontAwesomeIcons.penToSquare,
+              size: 24,
+              color: Colors.white,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.penToSquare),
-            label: "Post",
-            // backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.heart),
-            label: "Like",
-            // backgroundColor: Colors.yellow,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.user),
-            label: "User",
-            // backgroundColor: Colors.teal,
+          const FaIcon(
+            FontAwesomeIcons.database,
+            size: 24,
           ),
         ],
+        onTap: _onTap,
       ),
     );
   }

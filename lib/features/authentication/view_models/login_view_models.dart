@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mood_tracker/features/authentication/repos/authentication_repository.dart';
+import 'package:mood_tracker/features/posts/view_models/timeline_view_model.dart';
 import 'package:mood_tracker/utils.dart';
 
 class LoginViewModel extends AsyncNotifier<void> {
@@ -23,6 +24,8 @@ class LoginViewModel extends AsyncNotifier<void> {
     if (state.hasError) {
       showFirebaseErrorSnack(context, state.error);
     } else {
+      ref.read(timelineProvider.notifier).refresh();
+
       context.go("/");
     }
   }

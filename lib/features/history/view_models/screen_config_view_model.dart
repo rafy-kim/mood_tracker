@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mood_tracker/features/settings/models/screen_config_model.dart';
-import 'package:mood_tracker/features/settings/repos/screen_config_repository.dart';
+import 'package:mood_tracker/features/history/models/screen_config_model.dart';
+import 'package:mood_tracker/features/history/repos/screen_config_repository.dart';
 
 class ScreenConfigViewModel extends Notifier<ScreenConfigModel> {
   final ScreenConfigRepository _repository;
